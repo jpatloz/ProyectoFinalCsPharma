@@ -15,10 +15,11 @@ builder.Services.AddEntityFrameworkNpgsql()
         options.UseNpgsql(builder.Configuration.GetConnectionString("EFCConexion"));
     });
 
-builder.Services.AddDbContext<LoginRegisterContext>(options =>
-    options.UseSqlServer("LoginRegisterContextConnection"));
+builder.Services.AddDbContext<LoginRegisterContext>(
+  o => o.UseNpgsql(builder.Configuration.GetConnectionString("EFCConexion")));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<LoginRegisterContext>();
 
 var app = builder.Build();

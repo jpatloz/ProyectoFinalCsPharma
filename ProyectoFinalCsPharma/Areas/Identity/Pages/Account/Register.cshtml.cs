@@ -76,7 +76,6 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             /// 
-
             [Required]
             [StringLength(255, ErrorMessage = "El campo del nombre tiene un máximo de 255 caracteres")]
             [Display(Name = "Nombre")]
@@ -97,7 +96,7 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "No alcanza el mínimo de carácteres requeridos", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -108,7 +107,7 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -127,8 +126,8 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.Nombre = Input.Nombre;
-                user.Apellidos = Input.Apellidos;
+                //user.Nombre = Input.Nombre;
+                //user.Apellidos = Input.Apellidos;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -136,7 +135,7 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("Usuario creado");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -147,8 +146,8 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirmar tu email",
+                        $"Por favor confirma tu cuenta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>pinchando aquí</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

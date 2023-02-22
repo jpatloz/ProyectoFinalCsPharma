@@ -3,9 +3,16 @@ html {
     background-color: #ffffff;
 }
 
+h1 {
+    color: #5dc1b9 !important;
+}
 
 body{
     color: #090909;
+}
+
+header{
+    background-color: #5ccb5f;
 }
 
 @media (min-width: 768px) {
@@ -15,8 +22,9 @@ body{
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    background-color: #ffffff;
 }
 
 body {
