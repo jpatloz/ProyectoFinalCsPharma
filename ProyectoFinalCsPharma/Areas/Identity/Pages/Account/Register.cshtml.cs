@@ -26,6 +26,7 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -34,12 +35,14 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _userStore = userStore;
+            _roleManager = roleManager;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
@@ -126,8 +129,8 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                //user.Nombre = Input.Nombre;
-                //user.Apellidos = Input.Apellidos;
+                user.Nombre = Input.Nombre;
+                user.Apellidos = Input.Apellidos;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -136,6 +139,18 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Usuario creado");
+
+                    var role = await _roleManager.RoleExistsAsync("Usuarios");
+
+                    if (!role)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("Usuarios"));
+                    }
+
+                    await _userManager.AddToRoleAsync(user, "Usuarios");
+
+              
+
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

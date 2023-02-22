@@ -36,6 +36,7 @@ public class LoginRegisterContext : IdentityDbContext<ApplicationUser>
         {
             builder.Property(usuario => usuario.Nombre).HasMaxLength(255);
             builder.Property(usuario => usuario.Apellidos).HasMaxLength(255);
+            builder.Property(usuario => usuario.Email).HasMaxLength(255);
         }
     }
 }
