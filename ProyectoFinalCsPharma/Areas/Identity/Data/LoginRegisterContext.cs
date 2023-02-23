@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DAL.Modelo;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,6 +13,8 @@ public class LoginRegisterContext : IdentityDbContext<ApplicationUser>
         : base(options)
     {
     }
+
+    public virtual DbSet<IdentityRole> Dlk_cat_acc_roles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

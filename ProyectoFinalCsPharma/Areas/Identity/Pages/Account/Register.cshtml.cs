@@ -101,17 +101,17 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "No alcanza el mínimo de carácteres requeridos", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
+            [Display(Name = "Contraseña")]
+            public string Contraseña { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
-            public string ConfirmPassword { get; set; }
+            [Display(Name = "ConfirmarContraseña")]
+            [Compare("Contraseña", ErrorMessage = "Las contraseñas no coinciden")]
+            public string ConfirmarContraseña { get; set; }
         }
 
 
@@ -134,7 +134,7 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _userManager.CreateAsync(user, Input.Contraseña);
 
                 if (result.Succeeded)
                 {
@@ -147,7 +147,7 @@ namespace ProyectoFinalCsPharma.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole("Usuarios"));
                     }
 
-                    await _userManager.AddToRoleAsync(user, "Usuarios");
+                    await _userManager.AddToRoleAsync(user, "Empleados");
 
               
 
